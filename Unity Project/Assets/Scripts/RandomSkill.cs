@@ -32,7 +32,7 @@ public class RandomSkill : MonoBehaviour
 		img = GetComponent<Image>();
 		btn = GetComponent<Button>();
 		auo = GetComponent<AudioSource>();
-		nameskill = transform.GetChild(0).GetComponent<Text>();
+		nameskill = transform.GetChild(0).GetComponent<Text>(); //取得子物件
 		skillpanel = GameObject.Find("技能背景");
 		StartCoroutine(ScrollEffect());
 	}

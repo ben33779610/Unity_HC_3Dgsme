@@ -12,6 +12,8 @@ public class player : MonoBehaviour
 	Animator anim;
 
 	Transform target;
+
+	private LevelManager levelmanger;
 	private void Start()
 	{
 
@@ -20,6 +22,7 @@ public class player : MonoBehaviour
 		joystick = GameObject.Find("虛擬搖桿").GetComponent<FixedJoystick>();
 		anim = GetComponent<Animator>();
 		target = GameObject.Find("目標").transform;
+		levelmanger = FindObjectOfType<LevelManager>();			//尋找類型  該類型只有一個
 	}
 
 	/// <summary>
@@ -29,6 +32,16 @@ public class player : MonoBehaviour
 	{
 		Move();
 	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.name == "傳送區域")
+		{
+			StartCoroutine(	levelmanger.NextLevel());
+		}
+
+	}
+
 
 	/// <summary>
 	/// 移動方法
