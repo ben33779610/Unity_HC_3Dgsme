@@ -5,6 +5,8 @@ public class player : MonoBehaviour
 	[Header("速度"), Range(0, 1500)]
 	public float speed;
 
+	public PlayerData data;
+
 	Rigidbody rig;           //剛體
 
 	FixedJoystick joystick; //虛擬搖桿
@@ -63,4 +65,12 @@ public class player : MonoBehaviour
 		transform.LookAt(targetPostion);
 	}
 
+	/// <summary>
+	/// 受傷
+	/// </summary>
+	/// <param name="damage"></param>
+	public void Hit(float damage)
+	{
+		data.Hp -= damage;
+	}
 }

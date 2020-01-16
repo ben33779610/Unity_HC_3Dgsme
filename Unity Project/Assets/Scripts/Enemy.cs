@@ -9,9 +9,9 @@ public class Enemy : MonoBehaviour
 
 	private Animator ani;				//動畫
 
-	private NavMeshAgent nav;			//導覽網格代理器
+	private NavMeshAgent nav;           //導覽網格代理器
 
-
+	private float Timer;
 
 
 	//摺疊 ctrl+m+o
@@ -24,6 +24,7 @@ public class Enemy : MonoBehaviour
 		playerpos = GameObject.FindWithTag("Player").GetComponent<Transform>();
 		nav.stoppingDistance = data.stopdis;
 		nav.speed = data.speed;
+		Timer = data.cd-0.5f;
 	}
 	private void Update()
 	{
@@ -35,8 +36,14 @@ public class Enemy : MonoBehaviour
 	/// </summary>
 	private void Wait()
 	{
-		
+		ani.SetBool("跑步開關", false);
+		Timer += Time.deltaTime;
 
+		if (Timer > data.cd)
+		{
+			Attack();
+			Timer = 0;
+		}
 	}
 
 	/// <summary>
@@ -49,14 +56,31 @@ public class Enemy : MonoBehaviour
 		transform.LookAt(postarget);
 		ani.SetBool("跑步開關",true);
 		nav.SetDestination(playerpos.position);
+
+		//print("剩餘距離" + nav.remainingDistance);  跟目的的勝於距離
+		if (nav.remainingDistance < nav.stoppingDistance)
+		{
+			Wait();
+		}
+		else
+		{
+			ani.SetBool("跑步開關", true);
+		}
 	}
+
+	protected virtual void Attack()
+	{
+		
+		ani.SetTrigger("攻擊開關");
+	}
+
 	/// <summary>
 	/// 受傷
 	/// </summary>
 	/// <param name="damage">傷害</param>
-	private void Hit(float damage)
+	public void Hit(float damage)
 	{
-
+		data.hp -= damage;
 	}
 	/// <summary>
 	/// 死亡
