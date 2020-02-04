@@ -7,6 +7,6 @@ public class PlayerData : ScriptableObject
 	[Header("玩家血量")]
 	public float Hp;
 
-	private float maxHp;//玩家最大血量
+	public float maxHp;//玩家最大血量
 
 }

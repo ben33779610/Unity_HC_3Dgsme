@@ -16,6 +16,8 @@ public class player : MonoBehaviour
 	Transform target;
 
 	private LevelManager levelmanger;
+
+	private HpValueManger hpvaluemanger;
 	private void Start()
 	{
 
@@ -24,7 +26,8 @@ public class player : MonoBehaviour
 		joystick = GameObject.Find("虛擬搖桿").GetComponent<FixedJoystick>();
 		anim = GetComponent<Animator>();
 		target = GameObject.Find("目標").transform;
-		levelmanger = FindObjectOfType<LevelManager>();			//尋找類型  該類型只有一個
+		levelmanger = FindObjectOfType<LevelManager>();         //尋找類型  該類型只有一個
+		hpvaluemanger = GetComponentInChildren<HpValueManger>();//尋找在子物件的該類型
 	}
 
 	/// <summary>
@@ -72,5 +75,7 @@ public class player : MonoBehaviour
 	public void Hit(float damage)
 	{
 		data.Hp -= damage;
+		hpvaluemanger.SetHpbar(data.Hp, data.maxHp);
+		StartCoroutine(hpvaluemanger.ShowText(damage, "-", Color.white));
 	}
 }
