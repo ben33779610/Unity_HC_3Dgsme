@@ -17,6 +17,8 @@ MonoBehaviour:
   atk: 20
   cd: 3
   stopdis: 2
-  atackY: 0.6
-  atackLength: 1.5
+  attackY: 0.5
+  attackLength: 1
   attackDelay: 0.8
+  attackZ: 0
+  bulletspeed: 0

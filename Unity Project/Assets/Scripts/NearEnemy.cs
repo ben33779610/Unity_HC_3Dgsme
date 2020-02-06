@@ -15,7 +15,7 @@ public class NearEnemy : Enemy
 		yield return new WaitForSeconds(data.attackDelay);
 		RaycastHit hit;
 
-		if (Physics.Raycast(transform.position + Vector3.up * data.atackY, transform.forward, out hit, data.atackLength))
+		if (Physics.Raycast(transform.position + Vector3.up * data.attackY, transform.forward, out hit, data.attackLength))
 		{
 			hit.collider.GetComponent<player>().Hit(data.atk);
 			
@@ -31,7 +31,7 @@ public class NearEnemy : Enemy
 		//右方 x transform.right
 		//上方 y transform.up
 		//Vector3.up= (0,1,0)
-		Gizmos.DrawRay(transform.position+Vector3.up*data.atackY, transform.forward*data.atackLength);
+		Gizmos.DrawRay(transform.position+Vector3.up*data.attackY, transform.forward*data.attackLength);
 
 
 	}

@@ -74,8 +74,17 @@ public class player : MonoBehaviour
 	/// <param name="damage"></param>
 	public void Hit(float damage)
 	{
+		if (anim.GetBool("死亡開關")) return;
 		data.Hp -= damage;
 		hpvaluemanger.SetHpbar(data.Hp, data.maxHp);
 		StartCoroutine(hpvaluemanger.ShowText(damage, "-", Color.white));
+		if (data.Hp < 0) Dead();
+	}
+
+	private void Dead()
+	{
+		anim.SetBool("死亡開關", true);
+		enabled = false;    //這個腳本停用
+		StartCoroutine(levelmanger.ShowRevial());
 	}
 }

@@ -16,6 +16,8 @@ public class LevelManager : MonoBehaviour
 
 	public Image imagecross; //轉場
 
+	public GameObject panelrevial;
+
 	private void Start()
 	{
 		animdoor = GameObject.Find("門板").GetComponent<Animator>();
@@ -58,4 +60,15 @@ public class LevelManager : MonoBehaviour
 		SceneManager.LoadScene("關卡2");
 	}
 
+	public IEnumerator ShowRevial()
+	{
+		panelrevial.SetActive(true);
+		Text resecond = panelrevial.transform.GetChild(1).GetComponent<Text>();
+
+		for (int i = 3; i > 0 ; i--)
+		{
+			resecond.text = i.ToString();
+			yield return new WaitForSeconds(1);
+		}
+	}
 }

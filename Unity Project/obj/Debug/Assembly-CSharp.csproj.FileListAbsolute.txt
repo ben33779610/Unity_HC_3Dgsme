@@ -1,0 +1,2 @@
+C:\Users\appedu\Documents\GitHub\Unity_HC_3Dgsme\Unity Project\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+C:\Users\appedu\Documents\GitHub\Unity_HC_3Dgsme\Unity Project\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
