@@ -9,4 +9,5 @@ public class PlayerData : ScriptableObject
 
 	public float maxHp;//玩家最大血量
 
+	public float atkcd;
 }

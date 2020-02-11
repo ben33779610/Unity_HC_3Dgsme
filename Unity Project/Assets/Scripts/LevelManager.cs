@@ -13,18 +13,21 @@ public class LevelManager : MonoBehaviour
 	public bool autoskill;
 
 	private Animator animdoor;
-
+	[Header("轉場畫面")]
 	public Image imagecross; //轉場
-
+	[Header("復活畫面")]
 	public GameObject panelrevial;
-
+	private AdManager AdManager;
+	[Header("復活按鈕")]
+	public Button btnrevial;
 	private void Start()
 	{
 		animdoor = GameObject.Find("門板").GetComponent<Animator>();
 		imagecross = GameObject.Find("轉場").GetComponent<Image>();
 		if (autoskill) Showskill();					//顯示技能
-		if (autodoor) Invoke("Showdoor", 3);		//延遲3秒後開門
-
+		if (autodoor) Invoke("Showdoor", 3);        //延遲3秒後開門
+		AdManager = FindObjectOfType<AdManager>();
+		btnrevial.onClick.AddListener(AdManager.ShowAdrevial);
 	}
 
 	/// <summary>
@@ -70,5 +73,11 @@ public class LevelManager : MonoBehaviour
 			resecond.text = i.ToString();
 			yield return new WaitForSeconds(1);
 		}
+	}
+
+	public void HideRevial()
+	{
+		StopCoroutine(ShowRevial());
+		panelrevial.SetActive(false);
 	}
 }

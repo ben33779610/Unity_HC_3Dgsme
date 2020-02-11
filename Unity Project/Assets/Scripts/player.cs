@@ -18,6 +18,8 @@ public class player : MonoBehaviour
 	private LevelManager levelmanger;
 
 	private HpValueManger hpvaluemanger;
+
+	private float Timer;
 	private void Start()
 	{
 
@@ -66,6 +68,21 @@ public class player : MonoBehaviour
 		target.position = new Vector3(pos.x - h, 0.4f, pos.z -v);
 		Vector3 targetPostion = new Vector3(target.position.x, pos.y, target.position.z);	//目標座標(目標的x,原本的y,目標的z)
 		transform.LookAt(targetPostion);
+		if (v == 0 && h == 0)
+		{
+			Timer += Time.deltaTime;
+			if (Timer > data.atkcd)
+			{
+				Attack();
+				Timer = 0;
+			}
+		}
+	}
+
+	public void Attack()
+	{
+		anim.SetTrigger("攻擊開關");
+		
 	}
 
 	/// <summary>
@@ -86,5 +103,13 @@ public class player : MonoBehaviour
 		anim.SetBool("死亡開關", true);
 		enabled = false;    //這個腳本停用
 		StartCoroutine(levelmanger.ShowRevial());
+	}
+
+	public void Revial()
+	{
+		anim.SetBool("死亡開關", false);
+		enabled = true;
+		data.Hp = data.maxHp;
+		levelmanger.HideRevial();
 	}
 }
