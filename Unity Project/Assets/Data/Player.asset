@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a006ae4eb11b6eb44943d4c071b16366, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  Hp: 180
+  Hp: 150
   maxHp: 200
-  atkcd: 1
+  atk: 200
+  atkcd: 0.75
+  attackY: 1.2
+  attackZ: 1.82
+  bulletspeed: 550
+  attackDelay: 0.1

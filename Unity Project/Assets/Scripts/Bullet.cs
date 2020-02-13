@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
 	/// 子彈的傷害
 	/// </summary>
 	public float damage;
+	public bool player;
 
 	/// <summary>
 	/// 勾選Trigger的物件碰撞到執行一次
@@ -13,10 +14,15 @@ public class Bullet : MonoBehaviour
 	/// <param name="other"></param>
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "Player")
+		if (!player && other.tag == "Player")
 		{
 			other.GetComponent<player>().Hit(damage);
-			Destroy(this);
+
 		}
+		else if (player && other.tag == "Enemy")
+		{
+			other.GetComponent<Enemy>().Hit(damage);
+		}
+		
 	}
 }

@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+using System.Linq; // 引用查詢API
 
 public class player : MonoBehaviour
 {
@@ -6,27 +8,26 @@ public class player : MonoBehaviour
 	public float speed;
 
 	public PlayerData data;
+	[Header("子彈")]
+	public GameObject bullet;
 
-	Rigidbody rig;           //剛體
-
-	FixedJoystick joystick; //虛擬搖桿
-
-	Animator anim;
-
-	Transform target;
-
+	private Rigidbody rig;           //剛體
+	private FixedJoystick joystick; //虛擬搖桿
+	private Animator ani;
+	private Transform target;
 	private LevelManager levelmanger;
-
 	private HpValueManger hpvaluemanger;
-
+	private Vector3 bulletpos;
 	private float Timer;
+	private Enemy[] enemy;      //抓到所有敵人
+	private float[] enemydis;		//取得敵人距離
 	private void Start()
 	{
 
 		rig = GetComponent<Rigidbody>();
 		//GameObject.Find("物件名稱").GetComponent<T>();		T --泛型(任一個形式
 		joystick = GameObject.Find("虛擬搖桿").GetComponent<FixedJoystick>();
-		anim = GetComponent<Animator>();
+		ani = GetComponent<Animator>();
 		target = GameObject.Find("目標").transform;
 		levelmanger = FindObjectOfType<LevelManager>();         //尋找類型  該類型只有一個
 		hpvaluemanger = GetComponentInChildren<HpValueManger>();//尋找在子物件的該類型
@@ -57,32 +58,17 @@ public class player : MonoBehaviour
 	{
 
 		float h = joystick.Horizontal;
-		float v = joystick.Vertical;
-		
-		
-		rig.AddForce(-h*speed,0,-v*speed);
-		
-		anim.SetBool("跑步開關", h != 0 || v != 0);
-
+		float v = joystick.Vertical;		
+		rig.AddForce(-h*speed,0,-v*speed);		
+		ani.SetBool("跑步開關", h != 0 || v != 0);
 		Vector3 pos = transform.position;
 		target.position = new Vector3(pos.x - h, 0.4f, pos.z -v);
 		Vector3 targetPostion = new Vector3(target.position.x, pos.y, target.position.z);	//目標座標(目標的x,原本的y,目標的z)
 		transform.LookAt(targetPostion);
 		if (v == 0 && h == 0)
 		{
-			Timer += Time.deltaTime;
-			if (Timer > data.atkcd)
-			{
 				Attack();
-				Timer = 0;
-			}
 		}
-	}
-
-	public void Attack()
-	{
-		anim.SetTrigger("攻擊開關");
-		
 	}
 
 	/// <summary>
@@ -91,7 +77,7 @@ public class player : MonoBehaviour
 	/// <param name="damage"></param>
 	public void Hit(float damage)
 	{
-		if (anim.GetBool("死亡開關")) return;
+		if (ani.GetBool("死亡開關")) return;
 		data.Hp -= damage;
 		hpvaluemanger.SetHpbar(data.Hp, data.maxHp);
 		StartCoroutine(hpvaluemanger.ShowText(damage, "-", Color.white));
@@ -100,16 +86,71 @@ public class player : MonoBehaviour
 
 	private void Dead()
 	{
-		anim.SetBool("死亡開關", true);
+		ani.SetBool("死亡開關", true);
 		enabled = false;    //這個腳本停用
 		StartCoroutine(levelmanger.ShowRevial());
 	}
 
 	public void Revial()
 	{
-		anim.SetBool("死亡開關", false);
+		ani.SetBool("死亡開關", false);
 		enabled = true;
 		data.Hp = data.maxHp;
 		levelmanger.HideRevial();
+	}
+
+	public void Attack()
+	{
+		if (Timer < data.atkcd)
+		{
+			Timer += Time.deltaTime;
+		}
+		else
+		{
+			Timer = 0;
+			ani.SetTrigger("攻擊開關");
+			//抓出所有敵人
+			enemy = FindObjectsOfType<Enemy>();
+			//所有敵人的距離
+			enemydis = new float[enemy.Length];
+			//距離陣列=新的浮點數陣列[數量]
+			for (int i = 0; i < enemy.Length; i++)
+			{
+				enemydis[i] = Vector3.Distance(transform.position, enemy[i].transform.position);
+				//距離=三為向量(A,B)
+			}
+			
+			float min = enemydis.Min();
+			int index = enemydis.ToList().IndexOf(min);
+			Vector3 enemypos = enemy[index].transform.position;
+			enemypos.y = transform.position.y;
+			transform.LookAt(enemypos);
+
+			StartCoroutine(Createbullet());
+		}
+	}
+
+	/// <summary>
+	/// 繪製圖示
+	/// </summary>
+	private void OnDrawGizmos()
+	{
+		Gizmos.color = Color.red;
+		bulletpos = transform.position + transform.forward * data.attackZ + transform.up * data.attackY;
+		Gizmos.DrawSphere(bulletpos, 0.1f);
+
+	}
+	private IEnumerator Createbullet()
+	{
+		Vector3 angle = transform.eulerAngles;  //角色本身的角度
+		Quaternion qua = Quaternion.Euler(angle.x + 180, angle.y, angle.z);//角度要轉換需要四元角度
+		yield return new WaitForSeconds(data.attackDelay);
+		bulletpos = transform.position + transform.forward * data.attackZ + transform.up * data.attackY;
+		GameObject temp = Instantiate(bullet, bulletpos, qua);
+		temp.GetComponent<Rigidbody>().AddForce(transform.forward * data.bulletspeed);//增加向前推力
+		temp.AddComponent<Bullet>();
+		temp.GetComponent<Bullet>().damage = data.atk;
+		temp.GetComponent<Bullet>().player = true;
+		Destroy(temp, 2);
 	}
 }

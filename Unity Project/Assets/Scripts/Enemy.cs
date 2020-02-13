@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
 
 	private float Timer;
 
+	private HpValueManger hpvaluemanger;
 
 	//摺疊 ctrl+m+o
 	//展開 ctrl+m+l 
@@ -21,10 +22,12 @@ public class Enemy : MonoBehaviour
 	{
 		ani = GetComponent<Animator>();
 		nav = GetComponent<NavMeshAgent>();
+		hpvaluemanger = GetComponentInChildren<HpValueManger>();
 		playerpos = GameObject.FindWithTag("Player").GetComponent<Transform>();
 		nav.stoppingDistance = data.stopdis;
 		nav.speed = data.speed;
 		Timer = data.cd-0.5f;
+		data.curhp = data.hp;
 	}
 	private void Update()
 	{
@@ -80,13 +83,18 @@ public class Enemy : MonoBehaviour
 	/// <param name="damage">傷害</param>
 	public void Hit(float damage)
 	{
-		data.hp -= damage;
+		if (ani.GetBool("死亡開關")) return;
+		data.curhp -= damage;
+		hpvaluemanger.SetHpbar(data.curhp, data.hp);
+		StartCoroutine(hpvaluemanger.ShowText(damage, "-", Color.white));
+		if (data.curhp < 0) Dead();
 	}
 	/// <summary>
 	/// 死亡
 	/// </summary>
 	private void Dead()
 	{
+		ani.SetBool("死亡開關", true);
 
 	}
 }
