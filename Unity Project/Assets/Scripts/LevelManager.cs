@@ -80,4 +80,15 @@ public class LevelManager : MonoBehaviour
 		StopCoroutine(ShowRevial());
 		panelrevial.SetActive(false);
 	}
+
+	public void Pass()
+	{
+		Showdoor();
+
+		Item[] items = FindObjectsOfType<Item>();
+		for (int i = 0; i < items.Length; i++)
+		{
+			items[i].pass = true;
+		}
+	}
 }

@@ -19,6 +19,7 @@ MonoBehaviour:
   stopdis: 50
   attackY: 3.46
   attackLength: 0
-  attackDelay: 0.2
+  attackDelay: 0.5
   attackZ: 1.85
   bulletspeed: 1000
+  coinrange: {x: 30, y: 60}

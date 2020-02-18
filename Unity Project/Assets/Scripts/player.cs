@@ -107,10 +107,16 @@ public class player : MonoBehaviour
 		}
 		else
 		{
-			Timer = 0;
-			ani.SetTrigger("攻擊開關");
+			
 			//抓出所有敵人
 			enemy = FindObjectsOfType<Enemy>();
+			if (enemy.Length == 0)
+			{
+				levelmanger.Pass();
+				return;
+			}
+			Timer = 0;
+			ani.SetTrigger("攻擊開關");
 			//所有敵人的距離
 			enemydis = new float[enemy.Length];
 			//距離陣列=新的浮點數陣列[數量]
