@@ -103,7 +103,7 @@ public class Enemy : MonoBehaviour
 		nav.isStopped = true;
 		CreateCoin();
 		Destroy(this);
-		
+		Destroy(gameObject, 0.5f);
 	}
 
 	private void CreateCoin()

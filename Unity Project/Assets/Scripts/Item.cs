@@ -16,6 +16,7 @@ public class Item : MonoBehaviour
 
     void Start()
     {
+		Physics.IgnoreLayerCollision(10, 10,false);
 		player = GameObject.Find("機器人").transform;
 		aud = GetComponent<AudioSource>();
 		HandleCollision();

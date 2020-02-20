@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using System.Linq; // 引用查詢API
+using UnityEngine.SceneManagement;
 
 public class player : MonoBehaviour
 {
@@ -31,6 +32,8 @@ public class player : MonoBehaviour
 		target = GameObject.Find("目標").transform;
 		levelmanger = FindObjectOfType<LevelManager>();         //尋找類型  該類型只有一個
 		hpvaluemanger = GetComponentInChildren<HpValueManger>();//尋找在子物件的該類型
+		if (SceneManager.GetActiveScene().buildIndex == 1)
+			data.Hp = data.maxHp;
 	}
 
 	/// <summary>
@@ -81,7 +84,7 @@ public class player : MonoBehaviour
 		data.Hp -= damage;
 		hpvaluemanger.SetHpbar(data.Hp, data.maxHp);
 		StartCoroutine(hpvaluemanger.ShowText(damage, "-", Color.white));
-		if (data.Hp < 0) Dead();
+		if (data.Hp <= 0) Dead();
 	}
 
 	private void Dead()

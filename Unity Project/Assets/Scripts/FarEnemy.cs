@@ -24,11 +24,11 @@ public class FarEnemy : Enemy
 		yield return new WaitForSeconds(data.attackDelay);
 		bulletpos = transform.position + transform.forward * data.attackZ + transform.up * data.attackY;
 		GameObject temp = Instantiate(bullet, bulletpos, transform.rotation);
-		temp.GetComponent<Rigidbody>().AddForce(transform.forward * data.bulletspeed);//增加向前推力
+		temp.GetComponent<Rigidbody>().AddForce(transform.forward * data.bulletspeed*1.5f);//增加向前推力
 		temp.AddComponent<Bullet>();
 		temp.GetComponent<Bullet>().damage = data.atk;
 		temp.GetComponent<Bullet>().player = false;
-		Destroy(temp, 2);
+		Destroy(temp, 5);
 	}
 
 	

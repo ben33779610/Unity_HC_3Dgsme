@@ -13,7 +13,7 @@ public class AdManager : MonoBehaviour,IUnityAdsListener
 	private player player;
 	private void Start()
 	{
-		Advertisement.Initialize(GoogleId, true);       //初始化廣告
+		Advertisement.Initialize(GoogleId, false);       //初始化廣告
 		Advertisement.AddListener(this);
 		player= FindObjectOfType<player>();
 	}
@@ -53,7 +53,7 @@ public class AdManager : MonoBehaviour,IUnityAdsListener
 					break;
 				case ShowResult.Finished:
 					print("完成");
-					player.Revial();
+					GameObject.Find("機器人").GetComponent<player>().Revial();
 					break;
 			}
 		}
