@@ -540,7 +540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 157ff88900765ee42960a13bc7c8a5b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
+  speed: 30
   data: {fileID: 11400000, guid: 9fb8dd0eb5528fb4494d01a9e9ca09cc, type: 2}
   bullet: {fileID: 6843434044803935942, guid: 8dedaf02ca036124b8e9c7f1adbf5fb0, type: 3}
 --- !u!1 &1777263483166110349

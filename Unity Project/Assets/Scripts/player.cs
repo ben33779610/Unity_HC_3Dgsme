@@ -99,6 +99,7 @@ public class player : MonoBehaviour
 		ani.SetBool("死亡開關", false);
 		enabled = true;
 		data.Hp = data.maxHp;
+		hpvaluemanger.SetHpbar(data.Hp, data.maxHp);
 		levelmanger.HideRevial();
 	}
 
@@ -160,6 +161,6 @@ public class player : MonoBehaviour
 		temp.AddComponent<Bullet>();
 		temp.GetComponent<Bullet>().damage = data.atk;
 		temp.GetComponent<Bullet>().player = true;
-		Destroy(temp, 2);
+		Destroy(temp, 5);
 	}
 }
